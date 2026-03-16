@@ -1,24 +1,38 @@
-name: test
-on: push
+name: CI
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-  test:
-    name: build and test ros_typedb pkg
-    runs-on: ubuntu-latest
-    container:
-      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+  typedb-setup:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        typedb_version: ["3.4.0", "latest"]
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    name: Run Action
     steps:
-      - uses: actions/checkout@v3.3.0
-      - name: Run TypeDB
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Action
         uses: ./
         with:
-          typedb_version: 3.8.1
-#      - name: run typedb
-#        run: sudo typedb server&
-#      - uses: ros-tooling/setup-ros@0.7.1
-#        with:
-#          required-ros-distributions: humble
-#      - uses: ros-tooling/action-ros-ci@0.4.3
-#        with:
-#          package-name: ros_typedb_msgs ros_typedb
-#          target-ros2-distro: humble
+          typedb_version: ${{ matrix.typedb_version }}
+          typedb_args: "--development-mode.enabled=true"
+
+      - name: Retrieve TypeDB version
+        run: curl --fail-with-body http://localhost:8000/v1/version
+
+      - name: Check TypeDB Console installation
+        run: typedb console --version
