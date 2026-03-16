@@ -35,4 +35,4 @@ jobs:
         run: curl --fail-with-body http://localhost:8000/v1/version
 
       - name: Check TypeDB Console installation
-        run: typedb console --version
+        run: typedb console --help
