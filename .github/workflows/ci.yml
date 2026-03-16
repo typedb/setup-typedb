@@ -1,13 +1,12 @@
 name: test
 on: push
 
-
 jobs:
   test:
     name: build and test ros_typedb pkg
     runs-on: ubuntu-latest
-#    container:
-#      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
     steps:
       - uses: actions/checkout@v3.3.0
       - name: Run TypeDB
