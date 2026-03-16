@@ -47,6 +47,6 @@ runs:
         TYPEDB_ARGS="${{ inputs.typedb_args }}"
         
         shopt -s expand_aliases
-        source ~/.bashrc
+        source "$HOME/.bashrc"
         typedb server --server.address="0.0.0.0:$TYPEDB_GRPC_PORT" --server.http.address="0.0.0.0:$TYPEDB_HTTP_PORT" $TYPEDB_ARGS &
         disown %1
