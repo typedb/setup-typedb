@@ -33,3 +33,43 @@ jobs:
 
       - name: Retrieve TypeDB version
         run: curl --fail-with-body http://localhost:8000/v1/version
+  test-without-fix:
+    name: build and test ros_typedb pkg
+    runs-on: ubuntu-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: Run TypeDB
+        uses: typedb/setup-typedb@1.0.0
+        with:
+          typedb_version: 3.8.1
+      - name: run typedb
+        run: sudo typedb server --development-mode.enabled=true &
+      - uses: ros-tooling/setup-ros@0.7.1
+        with:
+          required-ros-distributions: humble
+      - uses: ros-tooling/action-ros-ci@0.4.3
+        with:
+          package-name: ros_typedb_msgs ros_typedb
+          target-ros2-distro: humble
+  test-with-fix:
+    name: build and test ros_typedb pkg
+    runs-on: ubuntu-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-jammy-latest
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: Run TypeDB
+        uses: ./
+        with:
+          typedb_version: 3.8.1
+      - name: run typedb
+        run: sudo typedb server --development-mode.enabled=true &
+      - uses: ros-tooling/setup-ros@0.7.1
+        with:
+          required-ros-distributions: humble
+      - uses: ros-tooling/action-ros-ci@0.4.3
+        with:
+          package-name: ros_typedb_msgs ros_typedb
+          target-ros2-distro: humble
