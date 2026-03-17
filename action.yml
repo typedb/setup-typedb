@@ -39,7 +39,7 @@ runs:
         echo "$HOME/.typedb" >> $GITHUB_PATH
 
     - name: Run TypeDB
-      shell: bash
+      shell: bash -l {0}
       run: |
         
         TYPEDB_GRPC_PORT="${{ inputs.typedb_grpc_port }}"
