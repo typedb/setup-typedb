@@ -39,7 +39,7 @@ runs:
         echo "$HOME/.typedb" >> $GITHUB_PATH
 
     - name: Run TypeDB
-      shell: bash -l {0}
+      shell: bash
       run: |
         
         TYPEDB_GRPC_PORT="${{ inputs.typedb_grpc_port }}"
@@ -47,5 +47,6 @@ runs:
         TYPEDB_ARGS="${{ inputs.typedb_args }}"
         
         shopt -s expand_aliases
+        source ~/.bashrc
         typedb server --server.address="0.0.0.0:$TYPEDB_GRPC_PORT" --server.http.address="0.0.0.0:$TYPEDB_HTTP_PORT" $TYPEDB_ARGS &
         disown %1
