@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use Action
-        uses: ./
+        uses: typedb/setup-typedb@e89ced502ada484a3d7037ceb20f6f03353b1440
         with:
           typedb_version: ${{ matrix.typedb_version }}
           typedb_args: "--development-mode.enabled=true"
