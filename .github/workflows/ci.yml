@@ -36,4 +36,4 @@ jobs:
 
       - name: Check TypeDB Console installation
         shell: bash -l {0}
-        run: typedb console --help
+        run: echo $PATH && typedb console --help
